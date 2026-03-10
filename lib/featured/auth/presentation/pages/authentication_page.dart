@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:news_core/core/constants/app_assets.dart';
 import 'package:news_core/core/utils/helpers.dart';
+import 'package:news_core/featured/dashboard/presentation/pages/dashboard_page.dart';
 
 import '../../../../../app/styles/text_styles.dart';
 import '../../../../../app/view/widgets/input/text_input_field.dart';
@@ -137,10 +138,19 @@ class _AuthenticationPageState extends State<AuthenticationPage>
         if (state.status == AuthStatus.authenticated) {
           if (_isLogin) {
             // Navigate to home screen
-            Navigator.pushReplacementNamed(context, RouteName.dashboardPage);
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              RouteName.dashboardPage,
+              arguments: DashboardPageParam(index: 0),
+              (route) => false,
+            );
           } else {
             // Navigate to Sign Up Success
-            Navigator.pushReplacementNamed(context, RouteName.successfulPage);
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              RouteName.successfulPage,
+              (route) => false,
+            );
           }
         } else if (state.status == AuthStatus.error) {
           setState(() => loading = false);

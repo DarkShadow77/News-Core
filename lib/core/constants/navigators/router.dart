@@ -34,10 +34,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 
     ///Universal Success Page
     case RouteName.successfulPage:
-      final args = settings.arguments! as SuccessfulPageParam;
       return _getPageRoute(
         routeName: settings.name!,
-        viewToShow: SuccessfulPage(param: args),
+        viewToShow: SuccessfulPage(),
       );
 
     default:

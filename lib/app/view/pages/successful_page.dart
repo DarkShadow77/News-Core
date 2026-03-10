@@ -10,9 +10,8 @@ import '../../../featured/dashboard/presentation/pages/dashboard_page.dart';
 import '../widgets/buttons/icon_text_button.dart';
 
 class SuccessfulPage extends StatefulWidget {
-  const SuccessfulPage({super.key, required this.param});
+  const SuccessfulPage({super.key});
 
-  final SuccessfulPageParam param;
   @override
   State<SuccessfulPage> createState() => _SuccessfulPageState();
 }
@@ -93,10 +92,4 @@ class _SuccessfulPageState extends State<SuccessfulPage> {
       ),
     );
   }
-}
-
-class SuccessfulPageParam {
-  final VoidCallback onTap;
-
-  SuccessfulPageParam({required this.onTap});
 }
