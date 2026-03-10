@@ -17,15 +17,15 @@ import 'core/constants/navigators/router.dart';
 import 'core/constants/strings.dart';
 import 'core/di/service_locator.dart';
 import 'core/utils/local_storage.dart';
+import 'featured/auth/presentation/bloc/auth_bloc.dart';
 import 'featured/dashboard/presentation/bloc/dashboard_bloc.dart';
+import 'featured/home/presentation/manager/news_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   //Initialize Hive for local storage
   await Hive.initFlutter();
-  await Hive.openBox(HiveStrings.box1);
-  await Hive.openBox(Strings.appName);
 
   //Initialize dotenv for environment variables
   await dotenv.load(fileName: ".env.development");
@@ -90,9 +90,11 @@ class _MyAppState extends State<MyApp> {
       child: MultiBlocProvider(
         providers: [
           BlocProvider(create: (_) => sl<ThemeBloc>()),
+          BlocProvider(create: (_) => sl<AuthBloc>()),
           BlocProvider(create: (_) => sl<DashboardBloc>()),
-
-          // BlocProvider(create: (_) => sl<AuthBloc>()),
+          BlocProvider(
+            create: (_) => sl<NewsBloc>()..add(const FetchTopHeadlinesEvent()),
+          ),
         ],
         child: BlocBuilder<ThemeBloc, ThemeMode>(
           builder: (context, themeMode) {
@@ -107,7 +109,6 @@ class _MyAppState extends State<MyApp> {
                   themeMode: themeMode,
                   onGenerateRoute: generateRoute,
                   initialRoute: RouteName.splashPage,
-                  // 🔒 THIS FIXES iOS TEXT RESIZING
                   builder: (context, child) {
                     final mediaQuery = MediaQuery.of(context);
 

@@ -77,7 +77,7 @@ class _OuterLoadingDialogState extends State<OuterLoadingDialog> {
                 text: widget.text,
                 style: TextStyles.normalMedium14(
                   context,
-                ).copyWith(color: AppColors.white75),
+                ).copyWith(color: AppColors.white70),
               ),
             ),
           ),

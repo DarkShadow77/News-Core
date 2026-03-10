@@ -263,6 +263,7 @@ class ApiService {
     return apiResponse;
   }
 
+  // Update your getRequestHandler method in api_service.dart
   Future<ApiResponse<T>> getRequestHandler<T>(
     String url, {
     T Function(dynamic)? transform,
@@ -270,6 +271,7 @@ class ApiService {
     String? accessToken,
     String? apiKey,
     CancelToken? cancelToken,
+    bool isNewsApi = false, // Add this parameter
   }) async {
     transform ??= (dynamic r) => r as T;
     final ApiResponse<T> apiResponse = ApiResponse<T>();
@@ -277,15 +279,14 @@ class ApiService {
     Logger().i("Request Path ${dotenv.env["BASE_URL"]}$url");
 
     try {
-      // Set headers locally for this request
-      final Map<String, String> headers = {
-        'Authorization': 'Bearer $accessToken',
-      };
+      final Map<String, String> headers = {};
+
+      if (!isNewsApi && accessToken != null) {
+        headers['Authorization'] = 'Bearer $accessToken';
+      }
 
       final requestOptions =
           options?.copyWith(headers: headers) ?? Options(headers: headers);
-
-      Logger().i("Authorization: $accessToken");
 
       final res = await dio.get(
         "${dotenv.env["BASE_URL"]}$url",
@@ -296,60 +297,28 @@ class ApiService {
       final dynamic data = res.data;
 
       Logger().i("Response $data");
-      Logger().i("Response Status Code: ${res.statusCode}");
 
       if (res.statusCode == 200 || res.statusCode == 201) {
-        //Call the update Cookie function
-        updateCookie(res.headers);
-
-        apiResponse.responseSuccessful = data['success'] ?? true;
-        apiResponse.responseMessage =
-            data['responseMessage'] ?? 'Request completed';
-        apiResponse.responseBody = transform(data['responseBody']);
+        // For NewsAPI, the structure is different
+        apiResponse.responseSuccessful = true;
+        apiResponse.responseMessage = 'Request completed';
+        apiResponse.responseBody = transform(data);
       } else {
-        apiResponse.responseSuccessful = data['success'] ?? false;
-        apiResponse.responseMessage =
-            data['responseMessage'] ?? 'Error encountered';
+        apiResponse.responseSuccessful = false;
+        apiResponse.responseMessage = data['message'] ?? 'Error encountered';
       }
 
       Logger().i("Response Successful: ${apiResponse.responseSuccessful}");
-      Logger().i("Response Message: ${apiResponse.responseMessage}");
-      Logger().i("Response Body: ${apiResponse.responseBody}");
     } on DioException catch (e) {
       Logger().i("Dio Response Full Message: ${e.response?.data}");
       apiResponse.responseSuccessful = false;
-
-      dynamic data = e.response?.data;
-      String message = 'An error occurred';
-
-      if (data is Map<String, dynamic>) {
-        // ✅ Handle normal JSON errors
-        final msg = data['responseMessage'];
-        message = msg is String ? msg : message;
-      } else if (data is String) {
-        // ✅ Handle HTML or text responses (like 502 Bad Gateway)
-        if (data.contains('502 Bad Gateway')) {
-          message = 'Server temporarily unavailable (502 Bad Gateway)';
-        } else if (data.contains('html')) {
-          message = 'Unexpected server error. Please try again later.';
-        } else {
-          message = data;
-        }
-      }
-
-      apiResponse.responseMessage = message;
-
-      Logger().i("Dio Response Successful: ${apiResponse.responseSuccessful}");
-      Logger().i("Dio Response Message: ${apiResponse.responseMessage}");
+      apiResponse.responseMessage =
+          e.response?.data['message'] ?? 'An error occurred';
     } on SocketException catch (_) {
       apiResponse.responseSuccessful = false;
-      apiResponse.responseMessage = "An Error occurred";
-
-      Logger().i(
-        "Socket Response Successful: ${apiResponse.responseSuccessful}",
-      );
-      Logger().i("Socket Response Successful: ${apiResponse.responseMessage}");
+      apiResponse.responseMessage = "No internet connection";
     }
+
     return apiResponse;
   }
 

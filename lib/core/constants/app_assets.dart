@@ -21,13 +21,14 @@ class AssetsOnboarding {
 class AssetsNavBar {
   //Navbar Icons
   static String home = "$baseImageNavBarPath/home.svg";
-  static String referral = "$baseImageNavBarPath/referral.svg";
-  static String wallet = "$baseImageNavBarPath/wallet.svg";
+  static String explore = "$baseImageNavBarPath/explore.svg";
+  static String heart = "$baseImageNavBarPath/heart.svg";
   static String profile = "$baseImageNavBarPath/profile.svg";
 }
 
 class AssetsPngImages {
   //PNG Images
+  static String profilePic = "$baseImagePngPath/profile_pic.png";
 }
 
 class AssetsSvgImages {
@@ -42,4 +43,5 @@ class AssetsSvgIcons {
   static String search = "$baseSvgIconsPath/search.svg";
   static String google = "$baseSvgIconsPath/google.svg";
   static String facebook = "$baseSvgIconsPath/facebook.svg";
+  static String notification = "$baseSvgIconsPath/notification.svg";
 }

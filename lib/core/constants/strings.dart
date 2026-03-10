@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'app_assets.dart';
 
 class Strings {
-  static const appName = 'Thessford';
+  static const appName = 'News Core';
   static const appFailure = 'An unknown error occurred';
   static const noInternet =
       'Please check your internet connection and try again';
@@ -49,8 +49,8 @@ class Lists {
 
   static List<Map<String, dynamic>> navBar = [
     {"icon": AssetsNavBar.home, "label": "Home"},
-    {"icon": AssetsNavBar.referral, "label": "Referrals"},
-    {"icon": AssetsNavBar.wallet, "label": "Wallet"},
+    {"icon": AssetsNavBar.explore, "label": "Explore"},
+    {"icon": AssetsNavBar.heart, "label": "Favorite"},
     {"icon": AssetsNavBar.profile, "label": "Profile"},
   ];
 }

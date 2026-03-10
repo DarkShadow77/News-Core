@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:news_core/core/constants/navigators/route_name.dart';
 
 import '../../../../../app/styles/text_styles.dart';
 import '../../../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_assets.dart';
+import '../../../featured/dashboard/presentation/pages/dashboard_page.dart';
 import '../widgets/buttons/icon_text_button.dart';
 
 class SuccessfulPage extends StatefulWidget {
@@ -23,7 +25,14 @@ class _SuccessfulPageState extends State<SuccessfulPage> {
       body: SafeArea(
         child: PopScope(
           canPop: false,
-          onPopInvokedWithResult: (canPop, result) => widget.param.onTap(),
+          onPopInvokedWithResult: (canPop, result) {
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              RouteName.dashboardPage,
+              arguments: DashboardPageParam(index: 0),
+              (route) => false,
+            );
+          },
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 25.w),
             child: Column(
@@ -58,7 +67,14 @@ class _SuccessfulPageState extends State<SuccessfulPage> {
                 SizedBox(height: 152.h),
                 IconTextButton(
                   spacing: 10,
-                  onPressed: () => widget.param.onTap(),
+                  onPressed: () {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      RouteName.dashboardPage,
+                      arguments: DashboardPageParam(index: 0),
+                      (route) => false,
+                    );
+                  },
                   text: "Continue to Feed",
                   color: AppColors.black,
                   textColor: AppColors.white,

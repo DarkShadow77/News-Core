@@ -19,11 +19,13 @@ class SearchTextInput extends StatefulWidget {
     this.textInputAction = TextInputAction.next,
     this.textCapitalization = TextCapitalization.words,
     this.onChanged,
+    this.onSubmitted,
+    this.suffixIcon,
     this.length = 999,
     this.color,
     this.inverse = false,
-    this.radius = 16,
-    this.height = 49,
+    this.radius = 40,
+    this.height = 46,
   });
 
   final bool errorBool;
@@ -35,6 +37,8 @@ class SearchTextInput extends StatefulWidget {
   final TextInputAction textInputAction;
   final TextCapitalization textCapitalization;
   final Function(String)? onChanged;
+  final Function(String)? onSubmitted;
+  final Widget? suffixIcon;
   final int length;
   final Color? color;
   final bool inverse;
@@ -72,7 +76,7 @@ class _SearchTextInputState extends State<SearchTextInput> {
     return Container(
       height: widget.height.h,
       decoration: BoxDecoration(
-        color: widget.color ?? Colors.transparent,
+        color: widget.color ?? AppColors.dynamic05,
         borderRadius: BorderRadius.circular(widget.radius.r),
         border: Border.all(
           width: 1.w,
@@ -80,7 +84,7 @@ class _SearchTextInputState extends State<SearchTextInput> {
               ? AppColors.error
               : isFocused
               ? AppColors.primary50
-              : AppColors.dynamic20,
+              : Colors.transparent,
         ),
       ),
       padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -113,11 +117,13 @@ class _SearchTextInputState extends State<SearchTextInput> {
                   context,
                 ).copyWith(fontSize: 15.sp, color: AppColors.dynamic40),
                 border: InputBorder.none,
+                suffixIcon: widget.suffixIcon,
               ),
               style: TextStyles.normalRegular14(
                 context,
               ).copyWith(fontSize: 15.sp, color: AppColors.dynamic),
               onChanged: widget.onChanged,
+              onSubmitted: widget.onSubmitted,
             ),
           ),
           if (widget.inverse) ...[
