@@ -3,10 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:news_core/featured/home/presentation/pages/home_page.dart';
+import 'package:news_core/featured/profile/presentation/pages/profile_page.dart';
 
 import '../../../../app/theme/bloc/theme_bloc.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/strings.dart';
+import '../../../../core/utils/helpers.dart';
 import '../bloc/dashboard_bloc.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -44,7 +46,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       NewsHomePage(),
                       Center(child: Text("Explore")),
                       Center(child: Text("Favorite")),
-                      Center(child: Text("Profile")),
+                      ProfilePage(),
                     ],
                   ),
 
@@ -62,9 +64,7 @@ class _DashboardPageState extends State<DashboardPage> {
                             end: Alignment.bottomCenter,
                             colors: [
                               Colors.transparent,
-                              (state == ThemeMode.dark
-                                      ? Colors.black
-                                      : Colors.white)
+                              (isDark() ? Colors.black : Colors.white)
                                   .withValues(alpha: 0.8),
                             ],
                           ),
